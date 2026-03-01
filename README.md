@@ -34,8 +34,8 @@ python app.py
 
 ```bash
 pkg update && pkg upgrade
-pkg install python git python-opencv
-pip install flask numpy Pillow
+pkg install python git
+pip install flask numpy Pillow opencv-python-headless
 ```
 
 3. Allow Termux to access your photos (needed to upload images):
@@ -64,7 +64,7 @@ Then open `http://localhost:5000` in your browser.
 
 - Python 3.9+
 - Flask
-- OpenCV (via `pkg install python-opencv` on Termux, or `pip install opencv-python-headless` elsewhere)
+- OpenCV (`pip install opencv-python-headless` on all platforms including Termux)
 - NumPy
 - Pillow
 
