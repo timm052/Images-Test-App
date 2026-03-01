@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Alignment Tool</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Image Alignment Tool</h1>
+      <p class="subtitle">Upload two similar images. The tool will detect keypoints, compute how far the cameras are apart, and tell you how to align them.</p>
+    </header>
+
+    <section class="upload-row">
+      <!-- Image A -->
+      <div class="upload-card" id="card-a">
+        <label class="upload-label" for="input-a">
+          <div class="drop-zone" id="drop-a">
+            <span class="icon">📷</span>
+            <span class="primary-text">Image A <em>(Reference)</em></span>
+            <span class="secondary-text">Click or drag & drop</span>
+            <img class="preview" id="preview-a" alt="" />
+          </div>
+          <input type="file" id="input-a" accept="image/*" hidden />
+        </label>
+        <button class="clear-btn" id="clear-a" aria-label="Clear image A">✕</button>
+      </div>
+
+      <div class="swap-col">
+        <div class="arrow-icon">⇄</div>
+      </div>
+
+      <!-- Image B -->
+      <div class="upload-card" id="card-b">
+        <label class="upload-label" for="input-b">
+          <div class="drop-zone" id="drop-b">
+            <span class="icon">📷</span>
+            <span class="primary-text">Image B <em>(To Align)</em></span>
+            <span class="secondary-text">Click or drag & drop</span>
+            <img class="preview" id="preview-b" alt="" />
+          </div>
+          <input type="file" id="input-b" accept="image/*" hidden />
+        </label>
+        <button class="clear-btn" id="clear-b" aria-label="Clear image B">✕</button>
+      </div>
+    </section>
+
+    <div class="action-row">
+      <button class="analyze-btn" id="analyze-btn" disabled>
+        <span class="btn-icon">🔍</span> Analyze Alignment
+      </button>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap" id="progress-wrap" hidden>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <p class="progress-label" id="progress-label">Detecting keypoints…</p>
+    </div>
+
+    <!-- Error -->
+    <div class="error-box" id="error-box" hidden>
+      <span class="error-icon">⚠</span>
+      <span id="error-msg"></span>
+    </div>
+
+    <!-- Results -->
+    <section class="results" id="results" hidden>
+      <h2>Results</h2>
+
+      <div class="metrics-row" id="metrics-row"></div>
+
+      <div class="instructions-box" id="instructions-box">
+        <h3>Camera Movement Instructions</h3>
+        <ol id="instruction-list"></ol>
+      </div>
+
+      <div class="result-img-wrap">
+        <h3>Visualization</h3>
+        <p class="viz-hint">Top: matched keypoints &nbsp;|&nbsp; Middle: overlay + difference heatmap &nbsp;|&nbsp; Bottom: alignment summary</p>
+        <img id="result-img" alt="Alignment visualization" />
+        <a class="download-btn" id="download-btn" download="alignment_result.png">⬇ Download Result Image</a>
+      </div>
+    </section>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
