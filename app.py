@@ -1,4 +1,5 @@
 import os
+import sys
 import math
 import base64
 import io
@@ -9,6 +10,34 @@ from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 32 * 1024 * 1024  # 32MB limit
+
+
+def _find_font(bold=False):
+    """Return a path to a usable TrueType font, or None if none found."""
+    if sys.platform == "win32":
+        candidates = [
+            r"C:\Windows\Fonts\arialbd.ttf" if bold else r"C:\Windows\Fonts\arial.ttf",
+            r"C:\Windows\Fonts\verdanab.ttf" if bold else r"C:\Windows\Fonts\verdana.ttf",
+        ]
+    elif sys.platform == "darwin":
+        candidates = [
+            "/System/Library/Fonts/Supplemental/Arial Bold.ttf" if bold else "/System/Library/Fonts/Supplemental/Arial.ttf",
+            "/Library/Fonts/Arial Bold.ttf" if bold else "/Library/Fonts/Arial.ttf",
+            "/System/Library/Fonts/Helvetica.ttc",
+        ]
+    else:
+        # Linux, Termux (Android), and other POSIX systems
+        candidates = [
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+            "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+            "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf" if bold else "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
+            # Termux on Android
+            "/data/data/com.termux/files/usr/share/fonts/TTF/DejaVuSans-Bold.ttf" if bold else "/data/data/com.termux/files/usr/share/fonts/TTF/DejaVuSans.ttf",
+            # Android system fonts
+            "/system/fonts/Roboto-Bold.ttf" if bold else "/system/fonts/Roboto-Regular.ttf",
+            "/system/fonts/DroidSans-Bold.ttf" if bold else "/system/fonts/DroidSans.ttf",
+        ]
+    return next((p for p in candidates if os.path.exists(p)), None)
 
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "bmp"}
 
@@ -226,8 +255,10 @@ def generate_result_image(img_a_pil, img_b_pil, kp_a, kp_b, good_matches, result
     draw = ImageDraw.Draw(instr_img)
 
     try:
-        font_title = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 18)
-        font_body = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
+        bold_path = _find_font(bold=True)
+        regular_path = _find_font(bold=False)
+        font_title = ImageFont.truetype(bold_path, 18) if bold_path else ImageFont.load_default()
+        font_body = ImageFont.truetype(regular_path, 14) if regular_path else ImageFont.load_default()
     except Exception:
         font_title = ImageFont.load_default()
         font_body = font_title

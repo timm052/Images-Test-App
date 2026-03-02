@@ -1,11 +1,4 @@
-# On standard Linux/Mac/Windows:
-#   pip install -r requirements.txt
-#
-# On Android (Termux), install OpenCV via pkg instead:
-#   pkg install python-opencv
-#   pip install flask numpy Pillow
 flask==3.0.3
 numpy==1.26.4
 Pillow==10.4.0
-# opencv-python-headless is excluded here — on Termux use: pkg install python-opencv
-# On all other platforms install separately: pip install opencv-python-headless
+opencv-python-headless

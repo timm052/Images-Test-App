@@ -19,54 +19,36 @@ A web app that compares two similar images, detects how far apart the camera pos
 
 ## Setup
 
-### Standard (Linux / Mac / Windows)
+Works on Linux, macOS, Windows, and Android (Termux).
 
 ```bash
 pip install -r requirements.txt
-pip install opencv-python-headless
 python app.py
-```
-
-### Android (Termux)
-
-1. Install [Termux from F-Droid](https://f-droid.org/packages/com.termux/) — **not** the Play Store version
-2. Open Termux and run:
-
-```bash
-pkg update && pkg upgrade
-pkg install python git
-pip install flask numpy Pillow opencv-python-headless
-```
-
-3. Allow Termux to access your photos (needed to upload images):
-
-```bash
-termux-setup-storage
-```
-
-4. Clone and run:
-
-```bash
-git clone <your-repo-url>
-cd Images-Test-App
-python app.py
-```
-
-5. Open Chrome or Firefox on your phone and go to:
-
-```
-http://localhost:5000
 ```
 
 Then open `http://localhost:5000` in your browser.
 
+### Android (Termux)
+
+1. Install [Termux from F-Droid](https://f-droid.org/packages/com.termux/) — **not** the Play Store version
+2. Run:
+
+```bash
+pkg update && pkg upgrade
+pkg install python git
+termux-setup-storage   # grants access to your photo gallery — tap Allow
+git clone <your-repo-url>
+cd Images-Test-App
+pip install -r requirements.txt
+python app.py
+```
+
+3. Open Chrome or Firefox and go to `http://localhost:5000`
+
 ## Requirements
 
 - Python 3.9+
-- Flask
-- OpenCV (`pip install opencv-python-headless` on all platforms including Termux)
-- NumPy
-- Pillow
+- Flask, NumPy, Pillow, opencv-python-headless (all installed via `pip install -r requirements.txt`)
 
 ## Usage
 
